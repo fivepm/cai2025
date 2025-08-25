@@ -1,0 +1,52 @@
+<?php
+
+// 1. Memanggil file konfigurasi database
+// Pastikan path/jalur file ini benar sesuai struktur folder Anda.
+require_once 'config/config.php';
+
+// ---------------------------------------------------
+// DATA PENGGUNA YANG AKAN DITAMBAHKAN
+// ---------------------------------------------------
+$nama = "Super Admin";
+$username = "superadmincai2025";
+$plain_password = "adminutamacai2025";
+$role = "superadmin";
+
+// ---------------------------------------------------
+// PROSES PENAMBAHAN USER
+// ---------------------------------------------------
+
+// 3. Hash password untuk keamanan
+$hashed_password = password_hash($plain_password, PASSWORD_DEFAULT);
+
+// 4. Buat kode barcode yang unik secara otomatis
+$kode_barcode = 'CAI-' . bin2hex(random_bytes(16));
+
+// 5. Cek apakah username sudah ada
+$check_sql = "SELECT id FROM users WHERE username = ?";
+$check_stmt = $conn->prepare($check_sql);
+$check_stmt->bind_param("s", $username);
+$check_stmt->execute();
+$check_stmt->store_result();
+
+if ($check_stmt->num_rows > 0) {
+    echo "❌ Error: Username '{$username}' sudah terdaftar. Proses dibatalkan.";
+} else {
+    // 6. Gunakan Prepared Statement untuk memasukkan data
+    $sql = "INSERT INTO users (nama, username, password, role, kode_barcode) VALUES (?, ?, ?, ?, ?)";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sssss", $nama, $username, $hashed_password, $role, $kode_barcode);
+
+    // 7. Eksekusi query dan berikan pesan
+    if ($stmt->execute()) {
+        echo "✅ **Sukses!** Pengguna 'Super Admin' dengan username '{$username}' berhasil ditambahkan.";
+    } else {
+        echo "❌ **Error:** Gagal menambahkan pengguna. " . $stmt->error;
+    }
+
+    $stmt->close();
+}
+
+$check_stmt->close();
+$conn->close();
