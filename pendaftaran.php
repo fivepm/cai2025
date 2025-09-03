@@ -1,6 +1,6 @@
 <?php
 
-// header("Location: pendaftaran_ditutup");
+header("Location: pendaftaran_ditutup");
 
 session_start();
 require_once 'config/config.php';
