@@ -25,29 +25,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
             $_SESSION['message'] = ['type' => 'success', 'text' => 'Data registrasi berhasil diperbarui.'];
 
             // Logika otomatisasi ke log_keuangan
-            // $stmt_log_check = $conn->prepare("SELECT id FROM log_keuangan WHERE keterangan LIKE ?");
-            // $keterangan_log = "Pembayaran dari Peserta ID: " . $peserta_id;
-            // $stmt_log_check->bind_param("s", $keterangan_log);
-            // $stmt_log_check->execute();
-            // $log_exists = $stmt_log_check->get_result()->fetch_assoc();
-            // $stmt_log_check->close();
+            $stmt_log_check = $conn->prepare("SELECT id FROM log_keuangan WHERE keterangan LIKE ?");
+            $keterangan_log = "Pembayaran dari Peserta ID: " . $peserta_id;
+            $stmt_log_check->bind_param("s", $keterangan_log);
+            $stmt_log_check->execute();
+            $log_exists = $stmt_log_check->get_result()->fetch_assoc();
+            $stmt_log_check->close();
 
-            // if ($status_pembayaran === 'lunas' && !$log_exists) {
-            //     // Tambahkan ke log keuangan jika belum ada
-            //     $nominal = 50000; // Asumsi biaya pendaftaran
-            //     $jenis = 'masuk';
-            //     $sumber = 'Peserta';
-            //     $stmt_log_add = $conn->prepare("INSERT INTO log_keuangan (tanggal, jumlah, jenis, keterangan, sumber_pemasukan) VALUES (NOW(), ?, ?, ?, ?)");
-            //     $stmt_log_add->bind_param("isss", $nominal, $jenis, $keterangan_log, $sumber);
-            //     $stmt_log_add->execute();
-            //     $stmt_log_add->close();
-            // } elseif ($status_pembayaran !== 'lunas' && $log_exists) {
-            //     // Hapus dari log keuangan jika ada dan status diubah jadi belum lunas
-            //     $stmt_log_delete = $conn->prepare("DELETE FROM log_keuangan WHERE id = ?");
-            //     $stmt_log_delete->bind_param("i", $log_exists['id']);
-            //     $stmt_log_delete->execute();
-            //     $stmt_log_delete->close();
-            // }
+            if ($status_pembayaran === 'lunas' && !$log_exists) {
+                // Tambahkan ke log keuangan jika belum ada
+                $nominal = 50000; // Asumsi biaya pendaftaran
+                $jenis = 'masuk';
+                $sumber = 'Peserta';
+                $stmt_log_add = $conn->prepare("INSERT INTO log_keuangan (tanggal, jumlah, jenis, keterangan, sumber_pemasukan) VALUES (NOW(), ?, ?, ?, ?)");
+                $stmt_log_add->bind_param("dsss", $nominal, $jenis, $keterangan_log, $sumber);
+                $stmt_log_add->execute();
+                $stmt_log_add->close();
+            } elseif ($status_pembayaran !== 'lunas' && $log_exists) {
+                // Hapus dari log keuangan jika ada dan status diubah jadi belum lunas
+                $stmt_log_delete = $conn->prepare("DELETE FROM log_keuangan WHERE id = ?");
+                $stmt_log_delete->bind_param("i", $log_exists['id']);
+                $stmt_log_delete->execute();
+                $stmt_log_delete->close();
+            }
         } else {
             $_SESSION['message'] = ['type' => 'error', 'text' => 'Gagal memperbarui data registrasi.'];
         }
