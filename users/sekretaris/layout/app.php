@@ -23,6 +23,8 @@ $isPesertaPage = strpos($current_page, 'peserta/') === 0;
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
+    <!-- PENTING: Pustaka untuk Scan QR Code -->
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <style>
         @media print {
             .no-print {
