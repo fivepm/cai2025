@@ -37,8 +37,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
                 $nominal = 50000; // Asumsi biaya pendaftaran
                 $jenis = 'masuk';
                 $sumber = 'Peserta';
-                $stmt_log_add = $conn->prepare("INSERT INTO log_keuangan (tanggal, nominal, jenis, keterangan, sumber_pemasukan) VALUES (NOW(), ?, ?, ?, ?)");
-                $stmt_log_add->bind_param("isss", $nominal, $jenis, $keterangan_log, $sumber);
+                $stmt_log_add = $conn->prepare("INSERT INTO log_keuangan (tanggal, jumlah, jenis, keterangan, sumber_pemasukan) VALUES (NOW(), ?, ?, ?, ?)");
+                $stmt_log_add->bind_param("dsss", $nominal, $jenis, $keterangan_log, $sumber);
                 $stmt_log_add->execute();
                 $stmt_log_add->close();
             } elseif ($status_pembayaran !== 'lunas' && $log_exists) {
