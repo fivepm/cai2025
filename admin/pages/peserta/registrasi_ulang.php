@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action'])) {
         $stmt_update->close();
     }
 
-    header("Location: " . $_SERVER['REQUEST_URI']);
+    header("Location: admin?page=presensi/registrasi_ulang");
     exit();
 }
 
