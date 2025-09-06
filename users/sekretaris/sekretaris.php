@@ -27,6 +27,13 @@ $allowed_pages = [
     'administrasi/surat_perizinan',
     'administrasi/surat_undangan',
     'administrasi/sesi_penunggu',
+    //presensi
+    'presensi/manajemen_sesi_presensi',
+    'presensi/scanner_kehadiran',
+    'presensi/log_kehadiran',
+    //peserta
+    'peserta/registrasi_ulang',
+    'peserta/tambah_peserta',
     // Tambahkan nama file lain di sini
 ];
 

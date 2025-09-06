@@ -30,6 +30,13 @@ $allowed_pages = [
     'administrasi/surat_perizinan',
     'administrasi/surat_undangan',
     'administrasi/sesi_penunggu',
+    //presensi
+    'presensi/manajemen_sesi_presensi',
+    'presensi/scanner_kehadiran',
+    'presensi/log_kehadiran',
+    //peserta
+    'peserta/registrasi_ulang',
+    'peserta/tambah_peserta',
     // Tambahkan nama file lain di sini
 ];
 
@@ -38,15 +45,17 @@ $page_file = "pages/{$page}.php";
 
 // Periksa apakah file halaman yang diminta ada dan diizinkan
 if (in_array($page, $allowed_pages) && file_exists($page_file)) {
-    // Mulai output buffering. Ini akan "menangkap" semua output dari file konten.
-    ob_start();
-
-    // Muat file konten (misal: pages/dashboard.php)
-    // Semua HTML di dalamnya akan ditangkap oleh buffer, bukan langsung ditampilkan.
-    include $page_file;
-
-    // Ambil konten yang sudah ditangkap dan simpan ke dalam variabel
-    $content = ob_get_clean();
+    // Cek apakah ini permintaan API
+    if (isset($_GET['api']) && $_GET['api'] === 'true') {
+        // Jika ya, jalankan logikanya saja dan berhenti (TIDAK ADA LAYOUT)
+        require_once $page_file;
+    } else {
+        // Jika tidak, tampilkan dengan layout seperti biasa
+        ob_start();
+        require_once $page_file;
+        $content = ob_get_clean();
+        require_once 'layout/app.php';
+    }
 } else {
     // Jika halaman tidak ditemukan, tampilkan pesan error
     http_response_code(404);
@@ -54,4 +63,4 @@ if (in_array($page, $allowed_pages) && file_exists($page_file)) {
 }
 
 // Terakhir, muat file layout utama dan kirimkan variabel $content ke dalamnya
-include 'layout/app.php';
+// include 'layout/app.php';

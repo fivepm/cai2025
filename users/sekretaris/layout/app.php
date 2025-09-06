@@ -7,6 +7,8 @@ $current_page = $_GET['page'] ?? 'dashboard'; // Untuk menandai menu aktif
 // Cek apakah halaman saat ini ada di dalam grup master data
 $isMasterDataPage = strpos($current_page, 'master/') === 0;
 $isAdministrasiPage = strpos($current_page, 'administrasi/') === 0;
+$isPresensiPage = strpos($current_page, 'presensi/') === 0;
+$isPesertaPage = strpos($current_page, 'peserta/') === 0;
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -94,7 +96,9 @@ $isAdministrasiPage = strpos($current_page, 'administrasi/') === 0;
             <nav class="mt-10"
                 x-data="{ 
                 isMasterDataOpen: <?php echo $isMasterDataPage ? 'true' : 'false'; ?>,
-                isAdministrasiOpen: <?php echo $isAdministrasiPage ? 'true' : 'false'; ?> 
+                isAdministrasiOpen: <?php echo $isAdministrasiPage ? 'true' : 'false'; ?>,
+                isPresensiOpen: <?php echo $isPresensiPage ? 'true' : 'false'; ?>,
+                isPesertaOpen: <?php echo $isPesertaPage ? 'true' : 'false'; ?>,
                 }">
                 <a href="sekretaris?page=dashboard" class="flex items-center px-4 py-2 mt-5 rounded-md <?php echo $current_page == 'dashboard' ? 'bg-red-800 text-yellow-300' : 'text-gray-300 hover:bg-red-800 hover:text-yellow-300'; ?>">
                     <i class="fas fa-tachometer-alt w-6"></i><span class="mx-4 font-medium">Dashboard</span>
@@ -145,6 +149,37 @@ $isAdministrasiPage = strpos($current_page, 'administrasi/') === 0;
                         <a href="sekretaris?page=administrasi/sesi_penunggu" class="block px-4 py-2 rounded-md text-sm <?php echo $current_page == 'administrasi/sesi_penunggu' ? 'text-yellow-300 font-semibold' : 'text-gray-300 hover:text-yellow-300'; ?>">
                             Sesi Penunggu
                         </a>
+                    </div>
+                </div>
+
+                <!-- Menu Peserta -->
+                <div>
+                    <button @click="isPesertaOpen = !isPesertaOpen" class="w-full flex items-center justify-between px-4 py-2 mt-5 text-gray-300 hover:bg-red-800 hover:text-yellow-300 rounded-md">
+                        <div class="flex items-center">
+                            <i class="fa-solid fa-user w-6"></i>
+                            <span class="mx-4 font-medium">Peserta</span>
+                        </div>
+                        <i class="fas transition-transform duration-200" :class="{ 'fa-chevron-down': isPesertaOpen, 'fa-chevron-right': !isPesertaOpen }"></i>
+                    </button>
+                    <div x-show="isPesertaOpen" x-transition class="mt-2 ml-4 space-y-2 border-l-2 border-yellow-500">
+                        <a href="sekretaris?page=peserta/tambah_peserta" class="block px-4 py-2 rounded-md text-sm <?php echo $current_page == 'peserta/tambah_peserta' ? 'text-yellow-300 font-semibold' : 'text-gray-300 hover:text-yellow-300'; ?>">Tambah Peserta</a>
+                        <a href="sekretaris?page=peserta/registrasi_ulang" class="block px-4 py-2 rounded-md text-sm <?php echo $current_page == 'peserta/registrasi_ulang' ? 'text-yellow-300 font-semibold' : 'text-gray-300 hover:text-yellow-300'; ?>">Registrasi Ulang</a>
+                    </div>
+                </div>
+
+                <!-- Menu Presensi -->
+                <div>
+                    <button @click="isPresensiOpen = !isPresensiOpen" class="w-full flex items-center justify-between px-4 py-2 mt-5 text-gray-300 hover:bg-red-800 hover:text-yellow-300 rounded-md">
+                        <div class="flex items-center">
+                            <i class="fa-solid fa-clipboard-user w-6"></i>
+                            <span class="mx-4 font-medium">Presensi</span>
+                        </div>
+                        <i class="fas transition-transform duration-200" :class="{ 'fa-chevron-down': isPresensiOpen, 'fa-chevron-right': !isPresensiOpen }"></i>
+                    </button>
+                    <div x-show="isPresensiOpen" x-transition class="mt-2 ml-4 space-y-2 border-l-2 border-yellow-500">
+                        <a href="sekretaris?page=presensi/manajemen_sesi_presensi" class="block px-4 py-2 rounded-md text-sm <?php echo $current_page == 'presensi/manajemen_sesi_presensi' ? 'text-yellow-300 font-semibold' : 'text-gray-300 hover:text-yellow-300'; ?>">Manajemen Sesi</a>
+                        <a href="sekretaris?page=presensi/scanner_kehadiran" class="block px-4 py-2 rounded-md text-sm <?php echo $current_page == 'presensi/scanner_kehadiran' ? 'text-yellow-300 font-semibold' : 'text-gray-300 hover:text-yellow-300'; ?>">Scanner Kehadiran</a>
+                        <a href="sekretaris?page=presensi/log_kehadiran" class="block px-4 py-2 rounded-md text-sm <?php echo $current_page == 'presensi/log_kehadiran' ? 'text-yellow-300 font-semibold' : 'text-gray-300 hover:text-yellow-300'; ?>">Log Kehadiran</a>
                     </div>
                 </div>
 
