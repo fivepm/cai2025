@@ -26,7 +26,7 @@ if (isset($_GET['code'])) {
     file_put_contents($token_path, json_encode($client->getAccessToken()));
 
     // Arahkan kembali ke halaman utama pembuatan surat
-    header('Location: admin.php?page=master/manajemen_surat_otomatis');
+    header('Location: admin/admin?page=master/surat_perizinan');
     exit();
 } else {
     echo "Kode otorisasi tidak ditemukan.";
